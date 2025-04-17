@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Course Schedule</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        .tab {
+            margin-bottom: 20px;
+        }
+
+        .tab button {
+            padding: 10px 20px;
+            font-weight: bold;
+            border: none;
+            background-color: #f1f1f1;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .tab button.active {
+            background-color: #ccc;
+        }
+
+        .tabcontent {
+            display: none;
+        }
+
+        .tabcontent.active {
+            display: block;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #aaa;
+            padding: 8px;
+            text-align: center;
+            min-width: 120px;
+            white-space: pre-wrap;
+        }
+
+        th {
+            background-color: #eee;
+        }
+
+        .time-col {
+            background-color: #f9f9f9;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        function openTab(evt, tabName) {
+            const contents = document.getElementsByClassName("tabcontent");
+            for (let i = 0; i < contents.length; i++) {
+                contents[i].classList.remove("active");
+            }
+
+            const buttons = document.getElementsByClassName("tablinks");
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove("active");
+            }
+
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        window.onload = function () {
+            document.getElementById("defaultOpen").click();
+        };
+    </script>
+</head>
+<body>
+    <h2>Course Schedule</h2>
+
+    <div class="tab">
+        <button class="tablinks" id="defaultOpen" onclick="openTab(event, 'Excel')">Excel Schedule</button>
+        <button class="tablinks" onclick="openTab(event, 'PDF')">PDF Schedule</button>
+    </div>
+
+    <!-- ✅ EXCEL TAB -->
+    <div id="Excel" class="tabcontent">
+        <table>
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="row : ${excelMatrix}">
+                    <td th:each="cell, iterStat : ${row}"
+                        th:text="${cell}"
+                        th:class="${iterStat.index == 0} ? 'time-col' : ''">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ✅ PDF TAB -->
+    <div id="PDF" class="tabcontent">
+    <table>
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="row : ${pdfMatrix}">
+                <td th:each="cell, iterStat : ${row}"
+                    th:text="${cell}"
+                    th:class="${iterStat.index == 0} ? 'time-col' : ''">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
